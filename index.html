@@ -9,7 +9,7 @@
 </head>
 <body>
     <main class="container">
-        <h1 class="app-title">Hot & Fresh</h1>
+        <h1 class="app-title">Hot & Fresh Cafe</h1>
         <section class="order-section">
             <h2 class="app-subtitle">Cashier App</h2>
             <form class="form">
@@ -52,8 +52,52 @@
             </form>
         </section>
 
-        <section class="receipt-section">
+        <section class="receipt-section" id="receipt">
+            <h1 class="app-title">Hot & Fresh</h1>
             <h2 class="app-subtitle">Receipt</h2>
+
+            <div class="receipt-header">
+                <p>Congo Town, Opp Dominion Church</p>
+                <a href="tel:+231775233168">0775 233 168 / </a>
+                <a href="tel:+2310880488080">0880 488 080</a>
+                <p>Date: <span class="date-element"></span></p>
+            </div>
+
+            <div class="receipt-customer-info">
+                <p>Customer: <span>Customer Name</span></p>
+                <p>Currency: <span>USD</span></p>
+            </div>
+
+            <div class="receipt-content">
+                <div class="receipt-content-title">
+                    <h3>Description</h3>
+                    <h3>Amount</h3>
+                </div>
+
+                <div class="receipt-content-order">
+                    <div>
+                        <p>Order Item</p>
+                        <p>$15.00</p>
+                    </div>
+                    <div>
+                        <p>Quantity</p>
+                        <p>3</p>
+                    </div>
+                </div>
+
+                <div class="receipt-total">
+                    <p>Total</p>
+                    <p>$15.00</p>
+                </div>
+            </div>
+
+            <div class="receipt-footer">
+                <p>Thank you for your order.</p>
+                <p>We serve you because you deserve.</p>
+                <p>Thank you!</p>
+            </div>
+
+            <button type="button" class="download-receipt-button">Download/Print</button>
         </section>
     </main>
 </body>

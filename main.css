@@ -22,12 +22,34 @@ html {
     --lightGrey: #afafaf;
 }
 
+::selection {
+    background-color: var(--greyTextColor);
+    color: var(--white);
+}
+
 body,
-p {
+p,
+h1,
+h2,
+h3 {
     margin: 0;
     padding: 0;
     color: var(--greyTextColor);
     font-family: 'Inter', sans-serif;
+}
+
+h3 {
+    font-weight: 700;
+}
+
+a {
+    text-decoration: none;
+    color: var(--blue);
+    transition: all 0.2s ease-in;
+}
+
+a:hover {
+    color: var(--blueFocus);
 }
 
 button {
@@ -60,7 +82,6 @@ select {
     font-size: 0.8rem;
     text-transform: uppercase;
     color: var(--lightGrey);
-    margin: 0;
     text-align: center;
     font-weight: 700;
 }
@@ -70,7 +91,6 @@ select {
     color: var(--blue);
     text-align: center;
     font-weight: 700;
-    margin: 0;
     padding-block: 0 2rem;
 }
 
@@ -183,7 +203,6 @@ select {
     background-color: #5c5c5c;
 }
 
-
 .save-order-button {
     background-color: var(--blue);
 }
@@ -193,6 +212,70 @@ select {
 }
 
 
+
+
+
+
 .receipt-section {
-    padding-block: 10rem 0;
+    padding-block: 10rem 5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    display: none;
+}
+
+.show-receipt-section {
+    display: block;
+}
+
+.receipt-header {
+    margin-block: -20px 0;
+    font-size: 0.7rem;
+}
+
+.receipt-customer-info {
+    padding: 2rem 0;
+}
+
+.receipt-customer-info span {
+    font-weight: 700;
+}
+
+.receipt-content-order {
+    padding-block: 0.5rem;
+    border-bottom: 1px solid var(--lightGrey);
+}
+
+.receipt-content-order div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.receipt-content-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.receipt-total {
+    display: flex;
+    justify-content: space-between;
+    padding-block: 0.5rem;
+    font-weight: 700;
+}
+
+.receipt-total p {
+    color: var(--blue);
+}
+
+.receipt-footer {
+    padding-block: 2rem;
+    font-size: 0.7rem;
+}
+
+.download-receipt-button {
+    width: 100%;
+    background-color: var(--blue);
+}
+
+.download-receipt-button:hover {
+    background-color: var(--blueFocus);
 }

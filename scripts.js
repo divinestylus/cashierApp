@@ -10,7 +10,11 @@ const customerField =  query(".customer-name"),
       cashierForm = query(".form"),
       orderListSection = query('.order-list'),
       getTotalButton = query(".calculate-button"),
-      orderListStorage = [];
+      receiptSection = query(".receipt-section"),
+      downloadReceiptButton = query(".download-receipt-button"),
+      dateElement = query(".date-element")
+      orderListStorage = [],
+      date = new Date();
   
 
 let orderItem = {
@@ -53,7 +57,7 @@ function addItem(){
                 <p class="error-message quantity-error"></p>
             </div>
             <div class="delete-wrapper">
-                <button type="button" class="delete">Delete Row</button>
+                <button type="button" class="delete">Remove</button>
                 <p class="error-message"></p>
             </div>
         </div>  
@@ -233,21 +237,10 @@ function storeOrders(orders){
     calculateAndDisplayTotal(orderItem.orders);
 }
 
-
-/** Listeners section */  
-addItemButton.addEventListener("click", addItem);
-getTotalButton.addEventListener("click", getTotal);
-
-// cashierForm.addEventListener("submit", getDetails);
-
-
-
-
-
-
-
-
-
+/**
+ * 
+ * @param {*} orders 
+ */
 function calculateAndDisplayTotal(orders){
     let prices = 0,
         quantities = 0;
@@ -256,52 +249,42 @@ function calculateAndDisplayTotal(orders){
         prices += Number(order.priceValue);
         quantities += Number(order.quantityValue);
     });
-
     totalAmount.innerText = `$${(prices * quantities)} ${orderItem.currencyValue}`;
+    return true;
+}
+
+/**
+ *  Function to get details
+ * @param {string} event - represents the click event
+ */
+function getDetails(event){
+    event.preventDefault();
+    receiptSection.classList.add("show-receipt-section");
+    dateElement.innerText = `${date.getFullYear()}-${date.getMonth() +1}-${date.getDate()}`
+    scrollToReceipt();
+}
+
+/** 
+ * Function to scroll to receipt section
+*/
+function scrollToReceipt(){
+    receiptSection.scrollIntoView({behavior: "smooth"});
+}
+
+/**
+ * Function to print receipt section
+ */
+function printReceiptSection() {
+    let printContent = document.querySelector('.receipt-section').innerHTML;
+    let originalContent = document.body.innerHTML;
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
 }
 
 
-// let customerName = customerField.value,
-//     currency = currencyDropdown.value,
-//     order = itemField.value,
-//     price = priceField.value,
-//     quantity = quantityRange.value;
-
-// /**
-//  *  Function to get details
-//  * @param {string} event - represents the click event
-//  */
-// function getDetails(event){
-//     event.preventDefault();
-
-//     storeOrder(customerName, currency, order, price, quantity);
-// }
-
-
-
-
-
-// /**
-//  * 
-//  * @param {string} customerName 
-//  * @param {string} currency 
-//  * @param {string} order 
-//  * @param {string} order 
-//  * @param {string} price 
-//  * @param {string} quantity 
-//  */
-// function storeOrder(customerName, currency, order, price, quantity){
-//     let orderInfo = {
-//         customer: `${customerName}`,
-//         currency: `${currency}`,
-//         order: `${order}`,
-//         price: `${price}`,
-//         quantity: `${quantity}`
-//     }
-
-//     if (orderList.length < 1){
-//         orderList.push(orderInfo);
-//     }
-// }
-
-
+/** Listeners section */  
+addItemButton.addEventListener("click", addItem);
+getTotalButton.addEventListener("click", getTotal);
+cashierForm.addEventListener("submit", getDetails);
+downloadReceiptButton.addEventListener("click", printReceiptSection);

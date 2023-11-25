@@ -19,6 +19,7 @@ html {
     --blue: #5ba4fc;
     --blueFocus: #4987dd;
     --greyTextColor: #5c5c5c;
+    --lightGrey: #afafaf;
 }
 
 body,
@@ -43,20 +44,34 @@ button:hover {
 
 input,
 select {
-    border: 1px solid grey;
+    background-color: var(--white);
+    border: 1px solid var(--lightGrey);
     border-radius: 4px;
+    color: var(--greyTextColor);
     padding: 1rem;
     outline: transparent;
 }
 
 .container {
-    padding: 2rem 1rem;
+    padding: 4rem 1rem;
 }
 
 .app-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--lightGrey);
+    margin: 0;
+    text-align: center;
+    font-weight: 700;
+}
+
+.app-subtitle {
     font-size: 1.5rem;
     color: var(--blue);
+    text-align: center;
     font-weight: 700;
+    margin: 0;
+    padding-block: 0 2rem;
 }
 
 .form {
@@ -137,6 +152,14 @@ select {
     justify-content: flex-end;
 }
 
+.total p {
+    color: var(--blue);
+}
+
+.total-amount {
+    font-weight: 700;
+}
+
 .calculate-button {
     height: fit-content;
     background-color: var(--green);
@@ -167,4 +190,9 @@ select {
 
 .save-order-button:hover {
     background-color: var(--blueFocus);
+}
+
+
+.receipt-section {
+    padding-block: 10rem 0;
 }

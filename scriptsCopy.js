@@ -13,12 +13,6 @@ const customerField =  query(".customer-name"),
       orderListStorage = [];
   
 
-let orderItem = {
-    customerName: null,
-    currencyValue: null,
-    orders: []
-}
-
 /** Functions section */
 
 /**
@@ -85,23 +79,37 @@ function removeItem(orderList){
 function getTotal(){
     const orderList = document.querySelectorAll(".list");
     orderList.forEach(order =>{
-
+        /** Store all user entries in an object */
+        let orderItem = {
+            customerName: customerField.value,
+            currencyValue: currencyDropdown.value,
+            orders: [
+                order.children[0].children[0].value,
+                order.children[1].children[0].value,
+                order.children[2].children[0].value
+            ]
+            // ,
+            // itemValue: order.children[0].children[0].value,
+            // priceValue: order.children[1].children[0].value,
+            // quantityValue: order.children[2].children[0].value
+        }
         /** Validate user entries in object */
         if (validateInputs(
-            customerField.value,
-            order.children[0].children[0].value,
-            order.children[1].children[0].value,
-            order.children[2].children[0].value)){
-            /** Store user entries in an object as my source of truth */
-            storeOrders(order);
+            orderItem.customerName,
+            orderItem.orders[0],
+            orderItem.orders[1],
+            orderItem.orders[2])){
+            /** Store user entries object in an array of objects as my source of truth */
+            storeOrders(orderItem);
         } else{
             return false;
         }
+        // calculateAndDisplayTotal(priceValue, quantityValue);
     })
 }
 
 /**
- * Function to validate all user entries
+ * PENDING.........................................................
  * @param {*} customerName 
  * @param {*} itemValue 
  * @param {*} priceValue 
@@ -213,24 +221,16 @@ function removeErrorMsg(input){
  * @param {*} orderItem 
  * @returns 
  */
-function storeOrders(orders){
-    /** Store all user entries in an object */
-    let orderList = {
-        itemValue: orders.children[0].children[0].value,
-        priceValue: orders.children[1].children[0].value,
-        quantityValue: orders.children[2].children[0].value
+function storeOrders(storage, orderItem){
+    if (storage.length === 0){
+        storage.push(orderItem);
+    } else {
+        if (storage[storage.length -1] !== orderItem){
+        } else {
+            storage.push(orderItem);
+        }
     }
-    orderItem.customerName = customerField.value;
-    orderItem.currencyValue = currencyDropdown.value;
-
-    if (orderItem.orders.length === 0){
-        orderItem.orders.push(orderList);
-    } else { 
-        orderItem.orders.push(orderList);
-    }
-    
-    console.log(orderItem)
-    calculateAndDisplayTotal(orderItem.orders);
+    console.log(orderListStorage)
 }
 
 
@@ -247,17 +247,13 @@ getTotalButton.addEventListener("click", getTotal);
 
 
 
-
-function calculateAndDisplayTotal(orders){
-    let prices = 0,
-        quantities = 0;
-
-    orders.forEach(order =>{
-        prices += Number(order.priceValue);
-        quantities += Number(order.quantityValue);
-    });
-
-    totalAmount.innerText = `$${(prices * quantities)} ${orderItem.currencyValue}`;
+/**
+ * PENDING.........................................................
+ * @param {number} priceValue 
+ * @param {number} quantityValue 
+ */
+function calculateAndDisplayTotal(priceValue, quantityValue){
+    totalAmount.innerText = `${(priceValue * quantityValue)} ${orderItem.currencyValue}`;
 }
 
 

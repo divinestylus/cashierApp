@@ -9,45 +9,52 @@
 </head>
 <body>
     <main class="container">
-        <h1 class="app-title">Cashier App</h1>
-        <form class="form">
-            <div class="customer-name-wrapper">
-                <input type="text" class="customer-name" placeholder="Customer Name">
-                <p class="error-message customer-name-error"></p>
-            </div>
-            <select name="" class="currency">
-                <option value="USD" selected>USD</option>
-                <option value="LRD">LRD</option>
-            </select>
-            <div class="order-list">
-                <div>
-                    <p class="order-title">Order</p>  
-                    <div class="list">
-                        <div class="item-wrapper">
-                            <input type="text" placeholder="Item" class="item">
-                            <p class="error-message item-error"></p>
-                        </div>
-                        <div class="price-wrapper">
-                            <input type="number" placeholder="Unit Price" class="price">
-                            <p class="error-message unit-price-error"></p>
-                        </div>
-                        <div class="quantity-wrapper">
-                            <input type="number" min="1" placeholder="Quantity" class="quantity">
-                            <p class="error-message quantity-error"></p>
+        <h1 class="app-title">Hot & Fresh</h1>
+        <section class="order-section">
+            <h2 class="app-subtitle">Cashier App</h2>
+            <form class="form">
+                <div class="customer-name-wrapper">
+                    <input type="text" class="customer-name" placeholder="Customer Name">
+                    <p class="error-message customer-name-error"></p>
+                </div>
+                <select name="" class="currency">
+                    <option value="USD" selected>USD</option>
+                    <option value="LRD">LRD</option>
+                </select>
+                <div class="order-list">
+                    <div>
+                        <p class="order-title">Order</p>  
+                        <div class="list">
+                            <div class="item-wrapper">
+                                <input type="text" placeholder="Item" class="item">
+                                <p class="error-message item-error"></p>
+                            </div>
+                            <div class="price-wrapper">
+                                <input type="number" placeholder="Unit Price" class="price">
+                                <p class="error-message unit-price-error"></p>
+                            </div>
+                            <div class="quantity-wrapper">
+                                <input type="number" min="1" placeholder="Quantity" class="quantity">
+                                <p class="error-message quantity-error"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="total">
-                <p>Total $<span class="total-amount">0</span></p>
-                <button type="button" class="calculate-button">Get Total</button>
+                <div class="total">
+                    <p>Total <span class="total-amount">$0</span></p>
+                    <button type="button" class="calculate-button">Get Total</button>
+    
+                </div>
+                <div class="buttons">
+                    <button type="button" class="add-item-button">Add Item</button>
+                    <button type="submit" class="save-order-button">Save Order</button>
+                </div>
+            </form>
+        </section>
 
-            </div>
-            <div class="buttons">
-                <button type="button" class="add-item-button">Add Item</button>
-                <button type="submit" class="save-order-button">Save Order</button>
-            </div>
-        </form>
+        <section class="receipt-section">
+            <h2 class="app-subtitle">Receipt</h2>
+        </section>
     </main>
 </body>
 </html>

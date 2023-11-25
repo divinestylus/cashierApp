@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <script src="./scripts.js" defer></script>
+    <title>Cashier App</title>
+</head>
+<body>
+    <main class="container">
+        <h1 class="app-title">Cashier App</h1>
+        <form class="form">
+            <div class="customer-name-wrapper">
+                <input type="text" class="customer-name" placeholder="Customer Name">
+                <p class="error-message customer-name-error"></p>
+            </div>
+            <select name="" class="currency">
+                <option value="USD" selected>USD</option>
+                <option value="LRD">LRD</option>
+            </select>
+            <div class="order-list">
+                <div>
+                    <p class="order-title">Order</p>  
+                    <div class="list">
+                        <div class="item-wrapper">
+                            <input type="text" placeholder="Item" class="item">
+                            <p class="error-message item-error"></p>
+                        </div>
+                        <div class="price-wrapper">
+                            <input type="number" placeholder="Unit Price" class="price">
+                            <p class="error-message unit-price-error"></p>
+                        </div>
+                        <div class="quantity-wrapper">
+                            <input type="number" min="1" placeholder="Quantity" class="quantity">
+                            <p class="error-message quantity-error"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="total">
+                <p>Total $<span class="total-amount">0</span></p>
+                <button type="button" class="calculate-button">Get Total</button>
+
+            </div>
+            <div class="buttons">
+                <button type="button" class="add-item-button">Add Item</button>
+                <button type="submit" class="save-order-button">Save Order</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

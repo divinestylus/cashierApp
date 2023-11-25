@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: inherit;
+}
+
+:root {
+    --white: #ffffff;
+    --red: #fc3d39;
+    --redFocus: #fc3d39;
+    --green: #62c450;
+    --greenFocus: #4aad38;
+    --blue: #5ba4fc;
+    --blueFocus: #4987dd;
+    --greyTextColor: #5c5c5c;
+}
+
+body,
+p {
+    margin: 0;
+    padding: 0;
+    color: var(--greyTextColor);
+    font-family: 'Inter', sans-serif;
+}
+
+button {
+    border: 0;
+    color: var(--white);
+    padding: 1rem;
+    border-radius: 4px;
+    transition: all 0.2s ease-in;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+input,
+select {
+    border: 1px solid grey;
+    border-radius: 4px;
+    padding: 1rem;
+    outline: transparent;
+}
+
+.container {
+    padding: 2rem 1rem;
+}
+
+.app-title {
+    font-size: 1.5rem;
+    color: var(--blue);
+    font-weight: 700;
+}
+
+.form {
+    display: grid;
+    gap: 1rem;
+}
+
+.customer-name-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.order-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.order-title {
+    padding-block: 0.5rem;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.item-wrapper,
+.price-wrapper,
+.quantity-wrapper,
+.delete-wrapper {
+    flex-grow: 1;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.item-wrapper {
+    flex-basis: 8rem;
+}
+
+.price-wrapper {
+    flex-basis: 2rem;
+}
+
+.quantity-wrapper {
+    flex-basis: 2rem;
+}
+
+.delete-wrapper {
+    flex-basis: 2rem;
+}
+
+.delete {
+    flex-grow: 1;
+    background-color: var(--red);
+}
+
+.delete:hover {
+    background-color: var(--redFocus);
+}
+
+.error-message {
+    height: 9px;
+    padding-inline-start: 0.2rem;
+    color: var(--red);
+    font-size: 0.7rem;
+}
+
+.total {
+    display: flex;
+    gap: 1rem ;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.calculate-button {
+    height: fit-content;
+    background-color: var(--green);
+}
+
+.calculate-button:hover {
+    background-color: var(--greenFocus);
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.add-item-button {
+    background-color: #8b8b8b;
+}
+
+.add-item-button:hover {
+    background-color: #5c5c5c;
+}
+
+
+.save-order-button {
+    background-color: var(--blue);
+}
+
+.save-order-button:hover {
+    background-color: var(--blueFocus);
+}

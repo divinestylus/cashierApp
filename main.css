@@ -20,6 +20,7 @@ html {
     --blueFocus: #4987dd;
     --greyTextColor: #5c5c5c;
     --lightGrey: #afafaf;
+    --mediumGray: #8b8b8b;
 }
 
 ::selection {
@@ -76,6 +77,8 @@ select {
 
 .container {
     padding: 4rem 1rem;
+    max-width: 770px;
+    margin: auto;
 }
 
 .app-title {
@@ -175,9 +178,6 @@ select {
 
 .total p {
     color: var(--blue);
-}
-
-.total-amount {
     font-weight: 700;
 }
 
@@ -197,14 +197,16 @@ select {
 }
 
 .secondary-button {
-    background-color: #8b8b8b;
+    background-color: var(--mediumGray);
+    flex-grow: 1;
 }
 
 .secondary-button:hover {
-    background-color: #5c5c5c;
+    background-color: var(--greyTextColor);
 }
 
 .primary-button {
+    flex-grow: 1;
     background-color: var(--blue);
 }
 
@@ -283,4 +285,24 @@ select {
 .disabled:hover {
     cursor: not-allowed;
     background-color: var(--lightGrey);
+}
+
+@media(min-width: 320px){
+    .container {
+        padding-inline: 2rem;
+    }
+}
+
+@media(min-width: 440px){
+    .buttons {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+}
+
+@media print {
+    .primary-button,
+    .secondary-button {
+        display: none;
+    }
 }

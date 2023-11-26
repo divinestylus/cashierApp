@@ -17,7 +17,7 @@ const customerField =  query(".customer-name"),
       receiptContentOrder = query(".receipt-content-order-section"),
       receiptTotalAmount = query(".receipt-total-amount"),
       downloadReceiptButton = query(".download-receipt-button"),
-      dateElement = query(".date-element")
+      dateElement = query(".date-element"),
       orderListStorage = [],
       date = new Date();
   

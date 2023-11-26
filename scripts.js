@@ -12,6 +12,10 @@ const customerField =  query(".customer-name"),
       newOrderButton = query(".new-order-button"),
       getTotalButton = query(".calculate-button"),
       receiptSection = query(".receipt-section"),
+      receiptUserName = query(".receipt-customer-name"),
+      receiptCurrency = query(".receipt-currency"),
+      receiptContentOrder = query(".receipt-content-order-section"),
+      receiptTotalAmount = query(".receipt-total-amount"),
       downloadReceiptButton = query(".download-receipt-button"),
       dateElement = query(".date-element")
       orderListStorage = [],
@@ -247,7 +251,7 @@ function calculateAndDisplayTotal(orders){
         total += Number(order.priceValue) * Number(order.quantityValue);
     });
     totalAmount.innerText = `$${total} ${orderItem.currencyValue}`;
-    localStorage.setItem("totalAmount", JSON.stringify(totalAmount));
+    localStorage.setItem("totalAmount", total);
     saveOrderButton.classList.remove("disabled");
     saveOrderButton.disabled = false;
 }
@@ -259,6 +263,11 @@ function calculateAndDisplayTotal(orders){
 function getDetails(event){
     event.preventDefault();
     /** Disable cashier app section buttons */
+    disableUserEntries();
+    showReceiptContent();
+}
+
+function disableUserEntries(){
     addItemButton.disabled = true;
     addItemButton.classList.add("disabled");
     getTotalButton.disabled = true;
@@ -269,9 +278,44 @@ function getDetails(event){
             deleteButton.classList.add("disabled");
         })
     }
+}
+
+/**
+ * 
+ */
+function showReceiptContent(){
     receiptSection.classList.add("show-receipt-section");
     dateElement.innerText = `${date.getFullYear()}-${date.getMonth() +1}-${date.getDate()}`
     scrollToReceipt();
+    let userInfo = JSON.parse(localStorage.getItem("userInfo")),
+        totalAmount = localStorage.getItem("totalAmount"),
+        userName = userInfo.customerName,
+        currency = userInfo.currencyValue,
+        userOrder = userInfo.orders;
+
+    receiptUserName.innerText = userName; 
+    receiptCurrency.innerText = currency;
+
+    userOrder.forEach(order =>{
+        receiptContentOrder.innerHTML += 
+        `
+        <div class="receipt-content-order">                        
+            <div>
+                <p>Item</p>
+                <p>${order.itemValue}</p>
+            </div>
+            <div>
+                <p>Price</p>
+                <p>$${order.priceValue}</p>
+            </div>
+            <div>
+                <p>Quantity</p>
+                <p>${order.quantityValue}</p>
+            </div>
+        </div>
+        `;
+    })
+    receiptTotalAmount.innerText = `$${totalAmount}`;
 }
 
 /** 
@@ -299,6 +343,8 @@ function reloadPage() {
     localStorage.clear();
     location.reload();
 }
+
+
   
 
 /** Listeners section */  

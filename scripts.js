@@ -9,6 +9,7 @@ const customerField =  query(".customer-name"),
       saveOrderButton = query(".save-order-button"),
       cashierForm = query(".form"),
       orderListSection = query('.order-list'),
+      newOrderButton = query(".new-order-button"),
       getTotalButton = query(".calculate-button"),
       receiptSection = query(".receipt-section"),
       downloadReceiptButton = query(".download-receipt-button"),
@@ -21,7 +22,9 @@ let orderItem = {
     customerName: null,
     currencyValue: null,
     orders: []
-}
+},  deleteItemButton;
+
+saveOrderButton.disabled = true;
 
 /** Functions section */
 
@@ -64,6 +67,7 @@ function addItem(){
     </div>
     `
     );
+    deleteItemButton = document.querySelectorAll(".delete")
     /** Remove list */
     const orderList = document.querySelectorAll(".list");
     removeItem(orderList);
@@ -87,9 +91,13 @@ function removeItem(orderList){
  * 
  */
 function getTotal(){
+    /** Clear user order records */
+    orderItem.orders = [];
+    /** Store User name and currency */
+    orderItem.customerName = customerField.value;
+    orderItem.currencyValue = currencyDropdown.value;
     const orderList = document.querySelectorAll(".list");
     orderList.forEach(order =>{
-
         /** Validate user entries in object */
         if (validateInputs(
             customerField.value,
@@ -212,45 +220,36 @@ function removeErrorMsg(input){
 }
 
 /**
- * PENDING.........................................................
- * @param {*} storage
- * @param {*} orderItem 
- * @returns 
+ * Function to store users orders
+ * @param {string} orders - user order list
  */
 function storeOrders(orders){
-    /** Store all user entries in an object */
+    /** Store all user orders in an object */
     let orderList = {
         itemValue: orders.children[0].children[0].value,
         priceValue: orders.children[1].children[0].value,
         quantityValue: orders.children[2].children[0].value
     }
-    orderItem.customerName = customerField.value;
-    orderItem.currencyValue = currencyDropdown.value;
-
-    if (orderItem.orders.length === 0){
-        orderItem.orders.push(orderList);
-    } else { 
-        orderItem.orders.push(orderList);
-    }
-    
-    console.log(orderItem)
+    orderItem.orders[orderItem.orders.length] = orderList;
+    localStorage.setItem("userInfo", JSON.stringify(orderItem));
     calculateAndDisplayTotal(orderItem.orders);
 }
 
+// console.log(JSON.parse(localStorage.getItem("userInfo")))
 /**
- * 
- * @param {*} orders 
+ * Function to calculate and display the total
+ * @param {*} orders - user order list
  */
 function calculateAndDisplayTotal(orders){
-    let prices = 0,
-        quantities = 0;
+    let total = 0;
 
     orders.forEach(order =>{
-        prices += Number(order.priceValue);
-        quantities += Number(order.quantityValue);
+        total += Number(order.priceValue) * Number(order.quantityValue);
     });
-    totalAmount.innerText = `$${(prices * quantities)} ${orderItem.currencyValue}`;
-    return true;
+    totalAmount.innerText = `$${total} ${orderItem.currencyValue}`;
+    localStorage.setItem("totalAmount", JSON.stringify(totalAmount));
+    saveOrderButton.classList.remove("disabled");
+    saveOrderButton.disabled = false;
 }
 
 /**
@@ -259,6 +258,17 @@ function calculateAndDisplayTotal(orders){
  */
 function getDetails(event){
     event.preventDefault();
+    /** Disable cashier app section buttons */
+    addItemButton.disabled = true;
+    addItemButton.classList.add("disabled");
+    getTotalButton.disabled = true;
+    getTotalButton.classList.add("disabled");
+    if (deleteItemButton !== undefined){
+        deleteItemButton.forEach(deleteButton =>{
+            deleteButton.disabled = true;
+            deleteButton.classList.add("disabled");
+        })
+    }
     receiptSection.classList.add("show-receipt-section");
     dateElement.innerText = `${date.getFullYear()}-${date.getMonth() +1}-${date.getDate()}`
     scrollToReceipt();
@@ -279,12 +289,21 @@ function printReceiptSection() {
     let originalContent = document.body.innerHTML;
     document.body.innerHTML = printContent;
     window.print();
-    document.body.innerHTML = originalContent;
+    reloadPage();
 }
 
+/**
+ * Funtion reloads page
+ */
+function reloadPage() {
+    localStorage.clear();
+    location.reload();
+}
+  
 
 /** Listeners section */  
 addItemButton.addEventListener("click", addItem);
 getTotalButton.addEventListener("click", getTotal);
 cashierForm.addEventListener("submit", getDetails);
 downloadReceiptButton.addEventListener("click", printReceiptSection);
+newOrderButton.addEventListener("click", reloadPage);

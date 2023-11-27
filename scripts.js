@@ -13,7 +13,6 @@ const cashierFormElement = query(".form"),
       formOrderElement = query('.form__order--wrapper'),
       formOrderListElement = query('.form__order--list'),
       formTotalAmountElement = query(".form__total"),
-      formGetTotalButtonElement = query(".form__button--total"),
       formAddItemButtonElement = query(".form__button--add-item"),
       formSaveOrderButtonElement = query(".form__button--save-order");
 
@@ -57,7 +56,6 @@ function query(element){
 
 /** Function adds order list*/
 function addItem(){
-    orderItemsObject.orders.push(localStorage.getItem("userInfo"))
     // Add list
     formOrderElement.insertAdjacentHTML("beforeend", 
     `
@@ -107,7 +105,6 @@ function getTotal(){
         price = null,
         quantityValue = null,
         quantity = null;
-
     cashierFormElement.addEventListener("keyup", event =>{
         switch(true){
             case event.target.classList.contains("form__name"):
@@ -262,25 +259,29 @@ function storeOrders(customerName, itemValue, priceValue, quantityValue){
         priceValue: priceValue,
         quantityValue: quantityValue
     }
+
     orderItemsObject.orders[orderItemsObject.orders.length] = orderList;
     localStorage.setItem("userInfo", JSON.stringify(orderItemsObject));
     calculateAndDisplayTotal(orderItemsObject.orders);
+    orderItemsObject.orders = [];
 }
 
 /**
  * Function to calculate and display the total
- * @param {string} orderItemsObjectOrders 
+ * @param {Array} orderItemsObjectOrders 
 */
 function calculateAndDisplayTotal(orderItemsObjectOrders){
     let totalAmount = 0;
     orderItemsObjectOrders.forEach(order =>{
+        if (isNaN(Number(order.priceValue) * Number(order.quantityValue))){
+            return false;
+        }
         totalAmount += Number(order.priceValue) * Number(order.quantityValue);
-    });
+    })
     formTotalAmountElement.innerText = `$${totalAmount} ${orderItemsObject.currencyValue}`;
     localStorage.setItem("totalAmount", totalAmount);
     formSaveOrderButtonElement.classList.remove("disabled");
     formSaveOrderButtonElement.disabled = false;
-    orderItemsObject.orders = [];
 }
 
 /**
@@ -368,7 +369,6 @@ function reloadPage() {
  * Event Listeners section
  ======================*/ 
 formAddItemButtonElement.addEventListener("click", addItem);
-// formGetTotalButtonElement.addEventListener("click", getTotal);
 cashierFormElement.addEventListener("submit", getDetails);
 receiptDownloadButtonElement.addEventListener("click", printReceiptSection);
 receiptNewOrderButtonElement.addEventListener("click", reloadPage);

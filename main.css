@@ -1,3 +1,6 @@
+/* ==================
+Gobal style section
+===================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
 
 html {
@@ -14,7 +17,6 @@ html {
     --white: #ffffff;
     --red: #fc3d39;
     --redFocus: #fc3d39;
-    --green: #62c450;
     --greenFocus: #4aad38;
     --blue: #5ba4fc;
     --blueFocus: #4987dd;
@@ -56,7 +58,7 @@ a:hover {
 button {
     border: 0;
     color: var(--white);
-    padding: 0.7rem 1rem;
+    padding: 0.8rem 1rem;
     border-radius: 4px;
     transition: all 0.2s ease-in;
 }
@@ -75,13 +77,22 @@ select {
     outline: transparent;
 }
 
+input:focus,
+select:focus,
+button:focus {
+    outline: 1px solid var(--greenFocus);
+}
+
+/* ==================
+Components style section
+===================== */
 .container {
     padding: 4rem 1rem;
     max-width: 770px;
     margin: auto;
 }
 
-.app-title {
+.app__title {
     font-size: 0.8rem;
     text-transform: uppercase;
     color: var(--lightGrey);
@@ -89,7 +100,7 @@ select {
     font-weight: 700;
 }
 
-.app-subtitle {
+.app__subtitle {
     font-size: 1.5rem;
     color: var(--blue);
     text-align: center;
@@ -97,27 +108,61 @@ select {
     padding-block: 0 2rem;
 }
 
+.form__buttons--wrapper,
+.receipt__buttons--wrapper {
+    padding-block-start: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form__button--secondary,
+.receipt__button--secondary {
+    background-color: var(--mediumGray);
+    flex-grow: 1;
+}
+
+.form__button--secondary:hover,
+.receipt__button--secondary:hover {
+    background-color: var(--greyTextColor);
+}
+
+.form__button--primary,
+.receipt__button--primary {
+    flex-grow: 1;
+    background-color: var(--blue);
+}
+
+.form__button--primary:hover,
+.receipt__button--primary:hover {
+    background-color: var(--blueFocus);
+}
+
+/* ==================
+Order style section
+===================== */
 .form {
     display: grid;
     gap: 0.5rem;
 }
 
-.customer-name-wrapper {
+.form__name--wrapper {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.order-list {
+.form__order--wrapper {
+    padding-block: 1rem;
     display: grid;
     gap: 1rem;
 }
 
-.order-title {
+.form__order--title {
     padding-block: 0.5rem;
 }
 
-.list {
+.form__order--list {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
@@ -125,10 +170,10 @@ select {
     justify-content: space-between;
 }
 
-.item-wrapper,
-.price-wrapper,
-.quantity-wrapper,
-.delete-wrapper {
+.item--wrapper,
+.price--wrapper,
+.quantity--wrapper,
+.delete--wrapper {
     flex-grow: 1;
     display: flex;
     gap: 0.5rem;
@@ -140,15 +185,9 @@ select {
     flex-basis: 8rem;
 }
 
-.price-wrapper {
-    flex-basis: 2rem;
-}
-
-.quantity-wrapper {
-    flex-basis: 2rem;
-}
-
-.delete-wrapper {
+.price--wrapper,
+.quantity--wrapper,
+.delete--wrapper {
     flex-basis: 2rem;
 }
 
@@ -161,120 +200,89 @@ select {
     background-color: var(--redFocus);
 }
 
-.error-message {
-    height: 9px;
-    padding: 0.1rem 0.2rem 0.4rem 0.2rem;
-    margin-block-start: -6px;
-    color: var(--red);
-    font-size: 0.6rem;
-}
-
-.total {
+.form__total--wrapper {
     display: flex;
     gap: 1rem ;
     align-items: center;
     justify-content: flex-end;
 }
 
-.total p {
+.form__total {
     color: var(--blue);
     font-weight: 700;
 }
 
-.calculate-button {
-    height: fit-content;
-    background-color: var(--green);
-}
-
-.calculate-button:hover {
-    background-color: var(--greenFocus);
-}
-
-.buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.secondary-button {
-    background-color: var(--mediumGray);
-    flex-grow: 1;
-}
-
-.secondary-button:hover {
-    background-color: var(--greyTextColor);
-}
-
-.primary-button {
-    flex-grow: 1;
-    background-color: var(--blue);
-}
-
-.primary-button:hover {
-    background-color: var(--blueFocus);
-}
-
-
-
-
-
-
-.receipt-section {
+/* ==================
+Receipt style section
+===================== */
+.receipt__section {
     padding-block: 10rem 5rem;
     text-align: center;
     font-size: 0.8rem;
     display: none;
 }
 
-.show-receipt-section {
+.receipt__section--show {
     display: block;
 }
 
-.receipt-header {
+.receipt__header--wrapper {
     margin-block: -20px 0;
     font-size: 0.7rem;
 }
 
-.receipt-customer-info {
+.receipt__customer--wrapper {
     padding: 2rem 0;
 }
 
-.receipt-customer-info span {
+.receipt__customer--name,
+.receipt__customer--currency {
     font-weight: 700;
     color: var(--blue);
 }
 
-.receipt-content-order {
+.receipt__content--title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.receipt__order--wrapper {
     display: grid;
     gap: 0.2rem;
     padding-block: 0.5rem;
     border-bottom: 1px solid var(--lightGrey);
 }
 
-.receipt-content-order div {
+.receipt__order--content div {
     display: flex;
     justify-content: space-between;
 }
 
-.receipt-content-title {
-    display: flex;
-    justify-content: space-between;
-}
-
-.receipt-total {
+.receipt__total--wrapper {
     display: flex;
     justify-content: space-between;
     padding-block: 0.5rem;
     font-weight: 700;
 }
 
-.receipt-total p {
+.receipt__total--wrapper p {
     color: var(--blue);
 }
 
-.receipt-footer {
+.receipt__footer--wrapper {
     padding-block: 2rem;
     font-size: 0.7rem;
+}
+
+/* ==================
+State style section
+===================== */
+.error-message {
+    height: 9px;
+    padding: 0.1rem 0.2rem 0.4rem 0.2rem;
+    margin-block-start: -6px;
+    color: var(--red);
+    font-size: 0.6rem;
 }
 
 .disabled {
@@ -287,6 +295,9 @@ select {
     background-color: var(--lightGrey);
 }
 
+/* ==================
+Responsiveness style section
+===================== */
 @media(min-width: 320px){
     .container {
         padding-inline: 2rem;
@@ -294,15 +305,32 @@ select {
 }
 
 @media(min-width: 440px){
-    .buttons {
+    .container {
+        padding-block: 8rem 2rem;
+    }
+    .form__buttons--wrapper,
+    .receipt__buttons--wrapper {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+}
+
+@media(min-width: 770px){
+    .container {
+        padding-block: 12rem 3rem;
+    }
+    .form__buttons--wrapper,
+    .receipt__buttons--wrapper {
         flex-direction: row;
         justify-content: flex-end;
     }
 }
 
 @media print {
-    .primary-button,
-    .secondary-button {
+    .form__button--primary,
+    .receipt__button--primary,
+    .form__button--secondary,
+    .receipt__button--secondary {
         display: none;
     }
 }

@@ -1,69 +1,82 @@
-/** Global constants section */
-const customerField =  query(".customer-name"),
-      currencyDropdown = query(".currency"),
-      itemField = query(".order"),
-      priceField = query(".price"),
-      quantityRange = query(".quantity"),
-      totalAmount = query(".total-amount"),
-      addItemButton = query(".add-item-button"),
-      saveOrderButton = query(".save-order-button"),
-      cashierForm = query(".form"),
-      orderListSection = query('.order-list'),
-      newOrderButton = query(".new-order-button"),
-      getTotalButton = query(".calculate-button"),
-      receiptSection = query(".receipt-section"),
-      receiptUserName = query(".receipt-customer-name"),
-      receiptCurrency = query(".receipt-currency"),
-      receiptContentOrder = query(".receipt-content-order-section"),
-      receiptTotalAmount = query(".receipt-total-amount"),
-      downloadReceiptButton = query(".download-receipt-button"),
-      dateElement = query(".date-element"),
-      orderListStorage = [],
-      date = new Date();
-  
+/**
+ * ==============================
+ * Global constants and variables
+ ======================*/
 
-let orderItem = {
+/** Order section constants */
+const cashierFormElement = query(".form"), 
+      formNameElement =  query(".form__name"),
+      formCurrencyElement = query(".form__currency--wrapper"),
+      itemInputElement = query(".item"),
+      priceInputElement = query(".price"),
+      quantityInputElement = query(".quantity"),
+      formOrderElement = query('.form__order--wrapper'),
+      formOrderListElement = query('.form__order--list'),
+      formTotalAmountElement = query(".form__total"),
+      formGetTotalButtonElement = query(".form__button--total"),
+      formAddItemButtonElement = query(".form__button--add-item"),
+      formSaveOrderButtonElement = query(".form__button--save-order");
+
+/** Receipt section constants */
+const receiptSectionElement = query(".receipt__section"),
+      receiptDateElement = query(".receipt__header--date"),
+      receiptNameElement = query(".receipt__customer--name"),
+      receiptCurrencyElement = query(".receipt__customer--currency"),
+      receiptOrderElement = query(".receipt__order--wrapper"),
+      receiptTotalAmountElement = query(".receipt__total--amount"),
+      receiptNewOrderButtonElement = query(".receipt__button--new-order"),
+      receiptDownloadButtonElement = query(".receipt__button--download");
+
+/** Root section constants */
+const orderListStorage = [],
+      dateObject = new Date(),
+      NUMBER_PATTERN = /^[0-9]+$/;
+  
+/** Order section variables */
+let orderItemsObject  = {
     customerName: null,
     currencyValue: null,
     orders: []
-},  deleteItemButton;
+},  
+formOrderCounter = 2;
 
-saveOrderButton.disabled = true;
 
-/** Functions section */
+/**
+ * ==============================
+ * Functions section
+ ======================*/
 
 /**
  * A utility function to query the DOM
- * @param {string} element - DOM element
- * @returns 
+ * @param {string} element - DOM element(s)
+ * @returns
  */
 function query(element){
     return document.querySelector(element);
 }
 
-/**
- * Function adds order list
- */
+/** Function adds order list*/
 function addItem(){
-    /** Add list */
-    orderListSection.insertAdjacentHTML("beforeend", 
+    orderItemsObject.orders.push(localStorage.getItem("userInfo"))
+    // Add list
+    formOrderElement.insertAdjacentHTML("beforeend", 
     `
     <div>
-        <p class="order-title">Order</p>
-        <div class="list">
-            <div class="item-wrapper">
-                <input type="text" placeholder="Item" class="item">
-                <p class="error-message item-error"></p>
+        <p class="form__order--title">Order <span>${formOrderCounter++}</span></p>  
+        <div class="form__order--list">
+            <div class="item--wrapper">
+                <input type="text" placeholder="Item" class="item form__field">
+                <p class="error-message item--error"></p>
             </div>
-            <div class="price-wrapper">
-                <input type="number" placeholder="Unit Price" class="price">
-                <p class="error-message unit-price-error"></p>
+            <div class="price--wrapper">
+                <input type="text" placeholder="Unit Price" class="price form__field">
+                <p class="error-message price--error"></p>
             </div>
-            <div class="quantity-wrapper">
-                <input type="number" min="1" placeholder="Quantity" class="quantity">
-                <p class="error-message quantity-error"></p>
+            <div class="quantity--wrapper">
+                <input type="text" min="1" placeholder="Quantity" class="quantity form__field">
+                <p class="error-message quantity--error"></p>
             </div>
-            <div class="delete-wrapper">
+            <div class="delete--wrapper">
                 <button type="button" class="delete">Remove</button>
                 <p class="error-message"></p>
             </div>
@@ -71,97 +84,111 @@ function addItem(){
     </div>
     `
     );
-    deleteItemButton = document.querySelectorAll(".delete")
-    /** Remove list */
-    const orderList = document.querySelectorAll(".list");
-    removeItem(orderList);
 }
 
-/**
- * Function removes order list
- * @param {*} orderList - represents new added order list 
- */
-function removeItem(orderList){
-    orderList.forEach(order =>{
-        order.addEventListener("click", (event) =>{
-            if (event.target.classList.contains("delete")){
-                event.target.parentElement.parentElement.parentElement.remove();
-            }
-        })   
-    });
-}
-
-/**
- * 
- */
-function getTotal(){
-    /** Clear user order records */
-    orderItem.orders = [];
-    /** Store User name and currency */
-    orderItem.customerName = customerField.value;
-    orderItem.currencyValue = currencyDropdown.value;
-    const orderList = document.querySelectorAll(".list");
-    orderList.forEach(order =>{
-        /** Validate user entries in object */
-        if (validateInputs(
-            customerField.value,
-            order.children[0].children[0].value,
-            order.children[1].children[0].value,
-            order.children[2].children[0].value)){
-            /** Store user entries in an object as my source of truth */
-            storeOrders(order);
-        } else{
-            return false;
+/** Function to remove order list */
+function removeItem(){
+    formOrderElement.addEventListener("click", event =>{
+        if (event.target.classList.contains("delete")){
+            event.target.parentElement.parentElement.parentElement.remove();
         }
+    })   
+}
+
+removeItem();
+
+/** Funtion to get total amount for the user entries */
+function getTotal(){
+    let customerName = null,
+        customer = null,
+        itemValue = null,
+        item = null,
+        priceValue = null,
+        price = null,
+        quantityValue = null,
+        quantity = null;
+
+    cashierFormElement.addEventListener("keyup", event =>{
+        switch(true){
+            case event.target.classList.contains("form__name"):
+                customerName = event.target.value,
+                customer = event.target;
+                break;
+            case event.target.classList.contains("item"):
+                itemValue = event.target.value,
+                item = event.target;
+                break;
+            case event.target.classList.contains("price"):
+                priceValue = event.target.value,
+                price = event.target;
+                break;
+            case event.target.classList.contains("quantity"):
+                quantityValue = event.target.value,
+                quantity = event.target;
+                break;               
+        }
+        if (validateInputs( // Validate user entries in object
+            customerName,
+            customer,
+            itemValue,
+            item,
+            priceValue,
+            price,
+            quantityValue,
+            quantity
+        )){storeOrders(customerName, itemValue, priceValue, quantityValue)/** Store user entries in an object as my source of truth*/} else{return false}  
     })
 }
 
+getTotal()
+
 /**
  * Function to validate all user entries
- * @param {*} customerName 
- * @param {*} itemValue 
- * @param {*} priceValue 
- * @param {*} quantityValue 
- */
-function validateInputs(customerName, itemValue, priceValue, quantityValue){
+ * @param {string} customerName 
+ * @param {string} itemValue 
+ * @param {string} priceValue 
+ * @param {string} quantityValue 
+*/
+function validateInputs(customerName, customer, itemValue, item, priceValue, price, quantityValue, quantity){
     if (
-        validateCustomerName(customerName),
-        validateUnitPrice(priceValue),
-        validateQuantity(quantityValue),
-        validateItem(itemValue)
-    ){
-        return true;
-    } else{
-        return false;
-    }
+        validateCustomerName(customerName, customer),
+        validateItem(itemValue, item),
+        validateUnitPrice(priceValue, price),
+        validateQuantity(quantityValue, quantity)
+    ){return true} else{return false}
 }
 
 /**
  * Funtion to validate customer's name
- * @param {string} customerName
+ * @param {string} customerName 
+ * @param {string} customer 
  * @returns 
  */
-function validateCustomerName(customerName){
-    const customerNameError = document.querySelectorAll(".customer-name-error");
+function validateCustomerName(customerName, customer){
     if (customerName.length === 0){
-        addErrorMsg(customerNameError, "Field can't be empty");
+        addErrorMsg(customer, "Field can't be empty");
         return false;
     } else if (customerName.length < 2){
-        addErrorMsg(customerNameError, "Name must be more the 2 characters");
+        addErrorMsg(customer, "Name must be more the 2 characters");
         return false;
     } else{
-        removeErrorMsg(customerNameError);
+        removeErrorMsg(customer);
         return true;
     }
 }
 
-function validateItem(itemValue){
-    const itemValueError = document.querySelectorAll(".item-error");
+/**
+ * Function to validate order item
+ * @param {string} itemValue 
+ * @param {string} item 
+ * @returns 
+*/
+function validateItem(itemValue, item){
     if (itemValue.length === 0){
-        addErrorMsg(itemValueError, "Field can't be empty");
+        addErrorMsg(item, "Field can't be empty");
         return false;
     } else{
-        removeErrorMsg(itemValueError);
+        removeErrorMsg(item);
         return true;
     }
 }
@@ -169,18 +196,20 @@ function validateItem(itemValue){
 /**
  * Function to validate unit price
  * @param {string} priceValue 
+ * @param {string} price 
  * @returns 
- */
-function validateUnitPrice(priceValue){
-    const priceValueError = document.querySelectorAll(".unit-price-error");
+*/
+function validateUnitPrice(priceValue, price){
     if (priceValue.length === 0){
-        addErrorMsg(priceValueError, "Field can't be empty");
+        addErrorMsg(price, "Field can't be empty");
         return false;
+    } else if (!NUMBER_PATTERN.test(priceValue)){
+        addErrorMsg(price, "Price can only be a number");
     } else if (Number(priceValue) < 0){
-        addErrorMsg(priceValueError, "Price can't be less than zero");
+        addErrorMsg(price, "Price can't be less than zero");
         return false;
     } else{
-        removeErrorMsg(priceValueError);
+        removeErrorMsg(price);
         return true;
     }
 }
@@ -188,104 +217,99 @@ function validateUnitPrice(priceValue){
 /**
  * Function to validate quantity value
  * @param {string} quantityValue 
+ * @param {string} quantity 
  * @returns 
- */
-function validateQuantity(quantityValue){
-    const quantityValueError = document.querySelectorAll(".quantity-error");
+*/
+function validateQuantity(quantityValue, quantity){
     if (quantityValue.length === 0){
-        addErrorMsg(quantityValueError, "Field can't be empty");
+        addErrorMsg(quantity, "Field can't be empty");
         return false;
+    } else if (!NUMBER_PATTERN.test(quantityValue)){
+        addErrorMsg(quantity, "Quantity can only be a number");
     } else if (Number(quantityValue) < 1){
-        addErrorMsg(quantityValueError, "Quantity can't be less than one");
+        addErrorMsg(quantity, "Quantity can't be less than one");
         return false;
     } else{
-        removeErrorMsg(quantityValueError);
+        removeErrorMsg(quantity);
         return true;
     }
 }
 
 /**
- * Function adds error message
- * @param {string} message - error message
+ * Function to add error message
+ * @param {string} inputElement 
+ * @param {string} message 
  */
-function addErrorMsg(input, message){
-    input.forEach(input =>{
-        input.innerText = message;
-    })
+function addErrorMsg(inputElement, message){
+    inputElement.nextElementSibling.innerText = message;
 }
 
-/**
- * Functions removes error message
- */
-function removeErrorMsg(input){
-    input.forEach(input =>{
-        input.innerText = "";
-    })
+/** Functions to remove error message */
+function removeErrorMsg(inputElement){
+    inputElement.nextElementSibling.innerText = "";
 }
 
 /**
  * Function to store users orders
- * @param {string} orders - user order list
+ * @param {string} formOrder - user order list
  */
-function storeOrders(orders){
-    /** Store all user orders in an object */
+function storeOrders(customerName, itemValue, priceValue, quantityValue){
+    // Store user name, currency and orders in an object 
+    orderItemsObject.customerName = customerName;
+    orderItemsObject.currencyValue = formCurrencyElement.value;
     let orderList = {
-        itemValue: orders.children[0].children[0].value,
-        priceValue: orders.children[1].children[0].value,
-        quantityValue: orders.children[2].children[0].value
+        itemValue: itemValue,
+        priceValue: priceValue,
+        quantityValue: quantityValue
     }
-    orderItem.orders[orderItem.orders.length] = orderList;
-    localStorage.setItem("userInfo", JSON.stringify(orderItem));
-    calculateAndDisplayTotal(orderItem.orders);
+    orderItemsObject.orders[orderItemsObject.orders.length] = orderList;
+    localStorage.setItem("userInfo", JSON.stringify(orderItemsObject));
+    calculateAndDisplayTotal(orderItemsObject.orders);
 }
 
-// console.log(JSON.parse(localStorage.getItem("userInfo")))
 /**
  * Function to calculate and display the total
- * @param {*} orders - user order list
- */
-function calculateAndDisplayTotal(orders){
-    let total = 0;
-
-    orders.forEach(order =>{
-        total += Number(order.priceValue) * Number(order.quantityValue);
+ * @param {string} orderItemsObjectOrders 
+*/
+function calculateAndDisplayTotal(orderItemsObjectOrders){
+    let totalAmount = 0;
+    orderItemsObjectOrders.forEach(order =>{
+        totalAmount += Number(order.priceValue) * Number(order.quantityValue);
     });
-    totalAmount.innerText = `$${total} ${orderItem.currencyValue}`;
-    localStorage.setItem("totalAmount", total);
-    saveOrderButton.classList.remove("disabled");
-    saveOrderButton.disabled = false;
+    formTotalAmountElement.innerText = `$${totalAmount} ${orderItemsObject.currencyValue}`;
+    localStorage.setItem("totalAmount", totalAmount);
+    formSaveOrderButtonElement.classList.remove("disabled");
+    formSaveOrderButtonElement.disabled = false;
+    orderItemsObject.orders = [];
 }
 
 /**
  *  Function to get details
- * @param {string} event - represents the click event
+ * @param {object} event - represents the click event
  */
 function getDetails(event){
     event.preventDefault();
-    /** Disable cashier app section buttons */
-    disableUserEntries();
-    showReceiptContent();
+    // Disable cashier app section buttons
+    disableUserEntries(event);
+    displayReceiptContent();
 }
 
-function disableUserEntries(){
-    addItemButton.disabled = true;
-    addItemButton.classList.add("disabled");
-    getTotalButton.disabled = true;
-    getTotalButton.classList.add("disabled");
-    if (deleteItemButton !== undefined){
-        deleteItemButton.forEach(deleteButton =>{
-            deleteButton.disabled = true;
-            deleteButton.classList.add("disabled");
-        })
+/** Function to disable order section buttons when receipt is being shown */
+function disableUserEntries(event){
+    formAddItemButtonElement.disabled = true;
+    formAddItemButtonElement.classList.add("disabled");
+    formGetTotalButtonElement.disabled = true;
+    formGetTotalButtonElement.classList.add("disabled");
+    for(let i = 1; i < event.target.children[2].children.length; i++){
+        event.target.children[2].children[i].lastElementChild.children[3].children[0].disabled =true;
+        event.target.children[2].children[i].lastElementChild.children[3].children[0].classList.add("disabled");
     }
 }
 
-/**
- * 
- */
-function showReceiptContent(){
-    receiptSection.classList.add("show-receipt-section");
-    dateElement.innerText = `${date.getFullYear()}-${date.getMonth() +1}-${date.getDate()}`
+/** Function to display receipt  */
+function displayReceiptContent(){
+    receiptSectionElement.classList.add("receipt__section--show");
+    receiptDateElement.innerText = `${dateObject.getFullYear()}-${dateObject.getMonth() +1}-${dateObject.getDate()}`
     scrollToReceipt();
     let userInfo = JSON.parse(localStorage.getItem("userInfo")),
         totalAmount = localStorage.getItem("totalAmount"),
@@ -293,13 +317,13 @@ function showReceiptContent(){
         currency = userInfo.currencyValue,
         userOrder = userInfo.orders;
 
-    receiptUserName.innerText = userName; 
-    receiptCurrency.innerText = currency;
+    receiptNameElement.innerText = userName; 
+    receiptCurrencyElement.innerText = currency;
 
     userOrder.forEach(order =>{
-        receiptContentOrder.innerHTML += 
+        receiptOrderElement.innerHTML += 
         `
-        <div class="receipt-content-order">                        
+        <div class="receipt__order--content">                        
             <div>
                 <p>Item</p>
                 <p>${order.itemValue}</p>
@@ -315,41 +339,40 @@ function showReceiptContent(){
         </div>
         `;
     })
-    receiptTotalAmount.innerText = `$${totalAmount}`;
+    receiptTotalAmountElement.innerText = `$${totalAmount}`;
 }
 
-/** 
- * Function to scroll to receipt section
-*/
+/**  Function to scroll to receipt section */
 function scrollToReceipt(){
-    receiptSection.scrollIntoView({behavior: "smooth"});
+    receiptSectionElement.scrollIntoView({behavior: "smooth"});
 }
 
-/**
- * Function to print receipt section
- */
+/** Function to print receipt section */
 function printReceiptSection() {
     let printContent = document.querySelector('.receipt-section').innerHTML;
     let originalContent = document.body.innerHTML;
-    document.body.innerHTML = printContent;
+    originalContent = printContent;
     window.print();
     reloadPage();
 }
 
-/**
- * Funtion reloads page
- */
+/** Funtion reloads page */
 function reloadPage() {
     localStorage.clear();
     location.reload();
 }
 
 
-  
-
-/** Listeners section */  
-addItemButton.addEventListener("click", addItem);
-getTotalButton.addEventListener("click", getTotal);
-cashierForm.addEventListener("submit", getDetails);
-downloadReceiptButton.addEventListener("click", printReceiptSection);
-newOrderButton.addEventListener("click", reloadPage);
+/**
+ * ==============================
+ * Event Listeners section
+ ======================*/ 
+formAddItemButtonElement.addEventListener("click", addItem);
+// formGetTotalButtonElement.addEventListener("click", getTotal);
+cashierFormElement.addEventListener("submit", getDetails);
+receiptDownloadButtonElement.addEventListener("click", printReceiptSection);
+receiptNewOrderButtonElement.addEventListener("click", reloadPage);
+document.addEventListener("DOMContentLoaded", () =>{
+    formSaveOrderButtonElement.disabled = true;
+    formSaveOrderButtonElement.classList.add("disabled");
+})

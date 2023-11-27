@@ -2,94 +2,86 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="main.css">
     <script src="./scripts.js" defer></script>
     <title>Cashier App</title>
 </head>
 <body>
     <main class="container">
-        <h1 class="app-title">Hot & Fresh Cafe</h1>
-        <section class="order-section">
-            <h2 class="app-subtitle">Cashier App</h2>
+        <!-- Order section -->
+        <section class="order__section">
+            <h1 class="app__title">Hot & Fresh Cafe</h1>
+            <h2 class="app__subtitle">Cashier App</h2>
             <form class="form">
-                <div class="customer-name-wrapper">
-                    <input type="text" class="customer-name" placeholder="Customer Name">
-                    <p class="error-message customer-name-error"></p>
+                <div class="form__name--wrapper">
+                    <input type="text" class="form__name form__field" placeholder="Customer Name">
+                    <p class="error-message form__name--error"></p>
                 </div>
-                <select name="" class="currency">
+                <select name="" class="form__currency--wrapper">
                     <option value="USD" selected>USD</option>
                     <option value="LRD">LRD</option>
                 </select>
-                <div class="order-list">
+                <div class="form__order--wrapper">
                     <div>
-                        <p class="order-title">Order</p>  
-                        <div class="list">
-                            <div class="item-wrapper">
-                                <input type="text" placeholder="Item" class="item">
-                                <p class="error-message item-error"></p>
+                        <p class="form__order--title">Order <span>1</span></p>  
+                        <div class="form__order--list">
+                            <div class="item--wrapper">
+                                <input type="text" placeholder="Item" class="item form__field">
+                                <p class="error-message item--error"></p>
                             </div>
-                            <div class="price-wrapper">
-                                <input type="number" placeholder="Unit Price" class="price">
-                                <p class="error-message unit-price-error"></p>
+                            <div class="price--wrapper">
+                                <input type="text" placeholder="Unit Price" class="price form__field">
+                                <p class="error-message price--error"></p>
                             </div>
-                            <div class="quantity-wrapper">
-                                <input type="number" min="1" placeholder="Quantity" class="quantity">
-                                <p class="error-message quantity-error"></p>
+                            <div class="quantity--wrapper">
+                                <input type="text" min="1" placeholder="Quantity" class="quantity form__field">
+                                <p class="error-message quantity--error"></p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="total">
-                    <p>Total <span class="total-amount">$0</span></p>
-                    <button type="button" class="calculate-button">Get Total</button>
-    
+                <div class="form__total--wrapper">
+                    <p class="form__total">Total <span>$0</span></p>
                 </div>
-                <div class="buttons">
-                    <button type="button" class="add-item-button secondary-button">Add Item</button>
-                    <button type="submit" class="save-order-button primary-button disabled">Save Order</button>
+                <div class="form__buttons--wrapper">
+                    <button type="button" class="form__button--add-item form__button--secondary">Add Item</button>
+                    <button type="submit" class="form__button--save-order form__button--primary">Save Order</button>
                 </div>
             </form>
         </section>
-
-        <section class="receipt-section" id="receipt">
-            <h1 class="app-title">Hot & Fresh</h1>
-            <h2 class="app-subtitle">Receipt</h2>
-
-            <div class="receipt-header">
+        <!-- Receipt section -->
+        <section class="receipt__section" id="receipt">
+            <h1 class="app__title">Hot & Fresh</h1>
+            <h2 class="app__subtitle">Receipt</h2>
+            <div class="receipt__header--wrapper">
                 <p>Congo Town, Opp Dominion Church</p>
                 <a href="tel:+231775233168">0775 233 168 / </a>
                 <a href="tel:+2310880488080">0880 488 080</a>
-                <p>Date: <span class="date-element"></span></p>
+                <p>Date: <span class="receipt__header--date"></span></p>
             </div>
-
-            <div class="receipt-customer-info">
-                <p>Customer: <span class="receipt-customer-name">Customer Name</span></p>
-                <p>Currency: <span class="receipt-currency">USD</span></p>
+            <div class="receipt__customer--wrapper">
+                <p>Customer: <span class="receipt__customer--name"></span></p>
+                <p>Currency: <span class="receipt__customer--currency"></span></p>
             </div>
-
-            <div class="receipt-content">
-                <div class="receipt-content-title">
+            <div class="receipt__content--wrapper">
+                <div class="receipt__content--title">
                     <h3>Description</h3>
                 </div>
-
-                <div class="receipt-content-order-section"></div>
-
-                <div class="receipt-total">
+                <div class="receipt__order--wrapper"></div>
+                <div class="receipt__total--wrapper">
                     <p>Total</p>
-                    <p class="receipt-total-amount">$15</p>
+                    <p class="receipt__total--amount"></p>
                 </div>
             </div>
-
-            <div class="receipt-footer">
+            <div class="receipt__footer--wrapper">
                 <p>Thank you for your order.</p>
                 <p>We serve you because you deserve.</p>
                 <p>Thank you!</p>
             </div>
-
-            <div class="buttons">
-                <button type="button" class="download-receipt-button primary-button">Download/Print</button>
-                <button type="button" class="new-order-button secondary-button">New Order</button>
+            <div class="receipt__buttons--wrapper">
+                <button type="button" class="receipt__button--download receipt__button--primary">Download/Print</button>
+                <button type="button" class="receipt__button--new-order receipt__button--secondary">New Order</button>
             </div>
         </section>
     </main>
